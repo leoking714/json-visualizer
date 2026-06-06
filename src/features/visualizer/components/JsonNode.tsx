@@ -13,12 +13,15 @@ const iconMap = {
 };
 
 const JsonNode = ({ data }: { data: JsonNodeData }) => {
-  const { label, value, type, isExpanded, onToggleExpand, path, remark, parentType } = data;
+  const { 
+    label, value, type, isExpanded, onToggleExpand, path, 
+    remark, parentType, isHighlighted 
+  } = data;
   const isExpandable = type === 'object' || type === 'array';
 
   return (
     <div 
-      className={`json-node type-${type} parent-${parentType || 'none'} ${isExpanded ? 'expanded' : ''}`}
+      className={`json-node type-${type} parent-${parentType || 'none'} ${isExpanded ? 'expanded' : ''} ${isHighlighted ? 'highlighted' : ''}`}
       onClick={() => isExpandable && onToggleExpand?.(path)}
     >
       <Handle type="target" position={Position.Left} style={{ visibility: 'hidden' }} />
@@ -65,6 +68,14 @@ const JsonNode = ({ data }: { data: JsonNodeData }) => {
           transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
           cursor: pointer;
           position: relative;
+        }
+
+        .json-node.highlighted {
+          border-color: #f59e0b !important;
+          box-shadow: 0 0 12px #f59e0b66, var(--shadow-lg) !important;
+          background: #fffbeb;
+          transform: scale(1.05);
+          z-index: 50;
         }
 
         .json-node:hover {

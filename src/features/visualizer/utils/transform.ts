@@ -44,7 +44,7 @@ export const transformJsonToGraph = (json: any, expandedPaths: Set<string>) => {
         style: { 
           strokeWidth: 2, 
           stroke: `var(--color-${type})`,
-          strokeDasharray: parentType === 'array' ? '5,5' : 'none' // Dash for array links
+          strokeDasharray: parentType === 'array' ? '5,5' : 'none'
         },
       });
     }
@@ -64,7 +64,6 @@ export const transformJsonToGraph = (json: any, expandedPaths: Set<string>) => {
 
   traverse('root', json);
 
-  // Apply Dagre Layout
   const g = new dagre.graphlib.Graph();
   g.setGraph({ rankdir: 'LR', nodesep: 50, ranksep: 100 });
   g.setDefaultEdgeLabel(() => ({}));
@@ -110,5 +109,47 @@ export const getAllExpandablePaths = (json: any, path = 'root'): string[] => {
     }
   }
 
+  return paths;
+};
+
+export const getPathsToMatches = (json: any, query: string, path = 'root'): Set<string> => {
+  const paths = new Set<string>();
+  if (!query) return paths;
+
+  const lowQuery = query.toLowerCase();
+  
+  const traverse = (val: any, currentPath: string): boolean => {
+    let hasMatchInDescendants = false;
+    const type = getType(val);
+
+    const keyMatch = currentPath.split('.').pop()?.toLowerCase().includes(lowQuery);
+    const valueMatch = type !== 'object' && type !== 'array' && String(val).toLowerCase().includes(lowQuery);
+
+    if (keyMatch || valueMatch) {
+      hasMatchInDescendants = true;
+    }
+
+    if (type === 'object' && val) {
+      Object.entries(val).forEach(([k, v]) => {
+        if (traverse(v, `${currentPath}.${k}`)) {
+          hasMatchInDescendants = true;
+        }
+      });
+    } else if (type === 'array' && Array.isArray(val)) {
+      val.forEach((item, index) => {
+        if (traverse(item, `${currentPath}.${index}`)) {
+          hasMatchInDescendants = true;
+        }
+      });
+    }
+
+    if (hasMatchInDescendants && (type === 'object' || type === 'array')) {
+      paths.add(currentPath);
+    }
+
+    return hasMatchInDescendants;
+  };
+
+  traverse(json, path);
   return paths;
 };
