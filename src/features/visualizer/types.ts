@@ -10,7 +10,10 @@ export interface JsonNodeData extends Record<string, unknown> {
   parentType?: 'object' | 'array';
   isExpanded?: boolean;
   isHighlighted?: boolean;
+  selectedPath?: string | null;
   onToggleExpand?: (path: string) => void;
+  onUpdateValue?: (path: string, newValue: any) => void;
+  onSelect?: (path: string) => void;
   path: string;
 }
 
