@@ -1,0 +1,61 @@
+:root {
+  --bg-color: #f8fafc;
+  --panel-bg: #ffffff;
+  --border-color: #e2e8f0;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+
+  /* Playful Vibrant Palette */
+  --color-string: #f97316; /* Orange */
+  --color-number: #3b82f6; /* Blue */
+  --color-boolean: #10b981; /* Green */
+  --color-null: #94a3b8;    /* Slate */
+  --color-object: #8b5cf6;  /* Purple */
+  --color-array: #ec4899;   /* Pink */
+  --color-key: #475569;
+
+  --accent-color: #6366f1;
+  --error-color: #ef4444;
+
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+
+  --radius-md: 12px;
+  --radius-lg: 18px;
+
+  --font-mono: 'Fira Code', 'Cascadia Code', monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  overflow: hidden;
+}
+
+.app-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+}
+
+.editor-panel {
+  width: 400px;
+  border-right: 1px solid var(--border-color);
+  background: var(--panel-bg);
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+}
+
+.graph-panel {
+  flex: 1;
+  position: relative;
+}
